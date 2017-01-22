@@ -22,8 +22,8 @@ class Point :
         other.y -= self.y
 
         # perform rotation about origin
-        ans.x = other.x*math.cos(theta) + other.y*math.sin(theta)
-        ans.y = -other.x*math.sin(theta) + other.y*math.cos(theta)
+        ans = Point( other.x*Decimal( math.cos(theta) ) - other.y*float( math.sin(theta) ),
+                     other.x*Decimal( math.sin(theta) ) + other.y*Decimal( math.cos(theta) ) )
 
         # translate back to restore origin
         ans.x += self.x
