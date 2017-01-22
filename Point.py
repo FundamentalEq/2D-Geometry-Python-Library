@@ -1,4 +1,5 @@
 from decimal import *
+from GlobalValuesLib import *
 import math
 
 class Point :
@@ -7,6 +8,11 @@ class Point :
         self.x = Decimal(x)
         self.y = Decimal(y)
 
+    def __eq__(self,other) :
+        if abs(self.x - other.x) <= EPS and abs(self.y - other.y) <= EPS :
+            return True
+        return False
+        
     # mid point between self and the other point
     def midpoint(self,other) :
         return Point((self.x+other.x)/2,(self.y+other.y)/2)
