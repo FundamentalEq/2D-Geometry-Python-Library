@@ -10,7 +10,17 @@ class Segment:
 
     def __init__(self,a,b) :
 
-        if a.x < b.x :
+        if a.x == b.x :
+            if a.y == b.y :
+                raise Exception "Single Point cannot form a segment"
+            if a.y < b.y :
+                self.a = a
+                self.b = b
+            else :
+                self.a = b
+                self.b = a
+
+        elif a.x < b.x :
             self.a = a
             self.b = b
         else :
@@ -115,3 +125,58 @@ class Segment:
         x = det(d, xdiff) / div
         y = det(d, ydiff) / div
         return Point(-x,-y)
+
+    # case1
+    # A --------------
+    # B   ----------
+
+    # case2
+    # A     --------------
+    # B   ----------------------
+
+    # case3
+    # A --------------
+    # B   -----------------
+
+    # case4
+    # A         --------------
+    # B   ----------
+
+    def facinglength(self,ls) :
+        # if the 2 LineSegments are not parallel => they will intersect => facing length = 0
+        if not self.is_parallel(ls) :
+            return Decimal(0)
+
+        # if the lines are exact vertical
+        if self.slope == inf :
+            # case 1
+            if self.a.y <= ls.a.y and ls.b.y <= self.b.y :
+                return ls.length
+
+            # case 2
+            if ls.a.y <= self.a.y and self.b.y <= ls.b.y :
+                return self.length
+
+            # case 3
+            if self.a.y <= ls.a.y  and self.b.y <= ls.b.y :
+                return ls.a.distance(self.b)
+
+            # case 4
+            if ls.a.y <= self.a.y and ls.b.y <= self.b.y :
+                return self.a.distance(ls.b)
+
+        # case 1
+        if self.a.x <= ls.a.x and ls.b.x <= self.b.x :
+            return ls.length
+
+        # case 2
+        if ls.a.x <= self.a.x and self.b.x <= ls.b.x :
+            return self.length
+
+        # case 3
+        if self.a.x <= ls.a.x  and self.b.x <= ls.b.x :
+            return ls.a.distance(self.b)
+
+        # case 4
+        if ls.a.x <= self.a.x and ls.b.x <= self.b.x :
+            return self.a.distance(ls.b)
