@@ -6,6 +6,7 @@ class Point :
     def __init__(self,x,y) :
         self.x = Decimal(x)
         self.y = Decimal(y)
+        self.coordinates = (self.x,self.y)
 
     # check for equality between 2 points within permissible limits of floating point error
     def __eq__(self,other) :
