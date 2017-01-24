@@ -11,8 +11,8 @@ class Segment:
     def __init__(self,a,b) :
 
         if a.x == b.x :
-            if a.y == b.y :
-                raise Exception "Single Point cannot form a segment"
+            # if a.y == b.y :
+            #     raise Exception('Single Point cannot form a segment')
             if a.y < b.y :
                 self.a = a
                 self.b = b
@@ -29,6 +29,7 @@ class Segment:
 
         self.length = a.distance(b)
         self.coordinates = (self.a,self.b)
+        self.points = (self.a,self.b)
 
         # finding slope of the line
         if abs(b.x - a.x) <= EPS :
@@ -136,7 +137,7 @@ class Segment:
             return True
 
         return False
-        
+
     # case1
     # A --------------
     # B   ----------
@@ -159,7 +160,7 @@ class Segment:
             return Decimal(0)
 
         # if the lines are exact vertical
-        if self.slope == inf :
+        if self.slope == Inf :
             # case 1
             if self.a.y <= ls.a.y and ls.b.y <= self.b.y :
                 return ls.length
