@@ -109,7 +109,7 @@ class Segment:
 
         return ans
 
-    def intersect(self,ls):
+    def extendedintersection(self,ls):
         xdiff = (self.b.x - self.a.x,ls.b.x - ls.a.x)
         ydiff = (self.b.y - self.a.y,ls.b.y - ls.a.y)
 
@@ -119,13 +119,24 @@ class Segment:
         div = det(xdiff, ydiff)
 
         if abs(div) <= EPS:
-            raise Exception('lines do not intersect')
+            return None
 
         d = (det(self.a.coordinates,self.b.coordinates), det(ls.a.coordinates,ls.b.coordinates))
         x = det(d, xdiff) / div
         y = det(d, ydiff) / div
         return Point(-x,-y)
 
+    def intersection(self,ls) :
+        p = self.extendedintersection(ls)
+
+        if p == None :
+            return False
+
+        if self.contains(p) and ls.contains(p) :
+            return True
+
+        return False
+        
     # case1
     # A --------------
     # B   ----------
@@ -180,3 +191,15 @@ class Segment:
         # case 4
         if ls.a.x <= self.a.x and ls.b.x <= self.b.x :
             return self.a.distance(ls.b)
+
+    def prependiculardistance(self,ls) :
+
+        # if the incoming is a point
+        if isinstance(ls,Point) :
+            return ls.distance(self.projection(ls))
+
+        if not self.is_parallel(ls) :
+            return Decimal(0)
+
+        # if the incoming is a line segment
+        return ls.a.distance(self.projection(ls.a))
