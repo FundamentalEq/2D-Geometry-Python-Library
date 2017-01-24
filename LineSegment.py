@@ -18,7 +18,7 @@ class Segment:
             self.b = a
 
         self.length = a.distance(b)
-        self.points = (self.a,self.b)
+        self.coordinates = (self.a,self.b)
 
         # finding slope of the line
         if abs(b.x - a.x) <= EPS :
@@ -79,25 +79,33 @@ class Segment:
         # shift self.Origin to a
         bn = Point(self.b.x - self.a.x,self.b.y - self.a.y)
         pn = Point(p.x - self.a.x ,p.y - self.a.y)
-        # print "bn "
-        # bn.printme()
-        # print "pn "
-        # pn.printme()
 
         # form the unit vector
         bn = Point(bn.x/self.Origin.distance(bn) , bn.y/self.Origin.distance(bn))
-        # print "bn "
-        # bn.printme()
 
         # find dot product
         t = bn.x * pn.x + bn.y * pn.y
-        # print "t is ",t
 
         # find the projected point
         ans = Point(t*bn.x,t*bn.y)
-        # print "ans is "
-        # ans.printme()
+
         # translate back the self.Origin
         ans = Point(ans.x + self.a.x,ans.y + self.a.y)
 
         return ans
+    def intersect(self, ls):
+        xdiff = (self.b.x - self.a.x,ls.b.x - ls.a.x)
+        ydiff = (self.b.y - self.a.y,ls.b.y - ls.a.y)
+
+        def det(a, b):
+            return a[0] * b[1] - a[1] * b[0]
+
+        div = det(xdiff, ydiff)
+
+        if abs(div) <= EPS:
+            raise Exception('lines do not intersect')
+
+        d = (det(self.a.coordinates,self.b.coordinates), det(ls.a.coordinates,ls.b.coordinates))
+        x = det(d, xdiff) / div
+        y = det(d, ydiff) / div
+        return Point(-x,-y)
