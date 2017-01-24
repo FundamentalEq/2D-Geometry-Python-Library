@@ -9,10 +9,17 @@ class Segment:
     Origin = Point(0,0)
 
     def __init__(self,a,b) :
-        self.a = a
-        self.b = b
+
+        if a.x < b.x :
+            self.a = a
+            self.b = b
+        else :
+            self.a = b
+            self.b = a
+
         self.length = a.distance(b)
-        self.points = (a,b)
+        self.points = (self.a,self.b)
+
         # finding slope of the line
         if abs(b.x - a.x) <= EPS :
             self.slope = Inf
@@ -21,11 +28,14 @@ class Segment:
 
     # Check if the two line segments ar
     def is_parallel(self,ls) :
+        # if both are vertical lines
         if self.slope == Inf and ls.slope == Inf :
             return True
+        # if one is vertical and other is not
         if self.slope == Inf or ls.slope == Inf :
             return False
 
+        # the genral case
         if abs(self.slope - ls.slope) <= EPS :
             return True
 
@@ -35,17 +45,18 @@ class Segment:
         selfn = Segment(Origin.rotate(math.pi/2,self.a),Origin.rotate(math.pi/2,self.b))
         lsn = Segment(Origin.rotate(math.pi/2,ls.a),Origin.rotate(math.pi/2,ls.b))
 
-        if selfn.slope == Inf and lsn.slope == Inf :
-            return True
-        if selfn.slope == Inf or lsn.slope == Inf :
-            return False
-
         if abs(selfn.slope - lsn.slope) <= EPS :
             return True
 
         return False
 
 
-    # Check if the line segment contains the given point or not
+    # Check if the line segment contains the given point "p" or not
     def contains(self,p) :
-        pass
+        if self.is_parallel(Segment(p,self.a)) :
+            if p.distance(self.a) <= EPS or p.distance(self.b) <= EPS :
+                return True
+            if self.a.x <= p.x and p.x <= self.b.x :
+                return True
+        else :
+            return False
