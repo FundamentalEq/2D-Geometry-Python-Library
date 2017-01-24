@@ -73,7 +73,6 @@ class Segment:
     def projection(self,p) :
         # if the point itself lies on the line segment return the point
         if self.is_parallel(Segment(self.a,p)) :
-            print "Point lies on the line itself"
             return p
 
         # shift self.Origin to a
@@ -93,7 +92,8 @@ class Segment:
         ans = Point(ans.x + self.a.x,ans.y + self.a.y)
 
         return ans
-    def intersect(self, ls):
+        
+    def intersect(self,ls):
         xdiff = (self.b.x - self.a.x,ls.b.x - ls.a.x)
         ydiff = (self.b.y - self.a.y,ls.b.y - ls.a.y)
 
