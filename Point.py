@@ -35,3 +35,5 @@ class Point :
         ans.x += self.x
         ans.y += self.y
         return ans
+    def printme(self) :
+        print "Point is ",float(self.x),float(self.y)
