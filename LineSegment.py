@@ -2,7 +2,12 @@ from decimal import *
 from Point import Point
 import math
 
+from GlobalValuesLib import *
+
 class Segment:
+
+    Origin = Point(0,0)
+
     def __init__(self,a,b) :
         self.a = a
         self.b = b
@@ -23,7 +28,23 @@ class Segment:
 
         if abs(self.slope - ls.slope) <= EPS :
             return True
+
+        # Rotate the line segments and again check for the line segments to be parallel
+        # to handle the case where the line segments are almost parallel but have very
+        # large slope as they are vertical
+        selfn = Segment(Origin.rotate(math.pi/2,self.a),Origin.rotate(math.pi/2,self.b))
+        lsn = Segment(Origin.rotate(math.pi/2,ls.a),Origin.rotate(math.pi/2,ls.b))
+
+        if selfn.slope == Inf and lsn.slope == Inf :
+            return True
+        if selfn.slope == Inf or lsn.slope == Inf :
+            return False
+
+        if abs(selfn.slope - lsn.slope) <= EPS :
+            return True
+
         return False
+
 
     # Check if the line segment contains the given point or not
     def contains(self,p) :
