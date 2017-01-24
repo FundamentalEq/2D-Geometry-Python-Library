@@ -42,9 +42,17 @@ class Segment:
         # Rotate the line segments and again check for the line segments to be parallel
         # to handle the case where the line segments are almost parallel but have very
         # large slope as they are vertical
-        selfn = Segment(Origin.rotate(math.pi/2,self.a),Origin.rotate(math.pi/2,self.b))
-        lsn = Segment(Origin.rotate(math.pi/2,ls.a),Origin.rotate(math.pi/2,ls.b))
+        selfn = Segment(self.Origin.rotate(math.pi/2,self.a),self.Origin.rotate(math.pi/2,self.b))
+        lsn = Segment(self.Origin.rotate(math.pi/2,ls.a),self.Origin.rotate(math.pi/2,ls.b))
 
+        # if both are vertical lines
+        if selfn.slope == Inf and lsn.slope == Inf :
+            return True
+        # if one is vertical and other is not
+        if selfn.slope == Inf or lsn.slope == Inf :
+            return False
+
+        # the genral case
         if abs(selfn.slope - lsn.slope) <= EPS :
             return True
 
@@ -60,3 +68,36 @@ class Segment:
                 return True
         else :
             return False
+
+    # find the projection of the given point "p" on the line segment
+    def projection(self,p) :
+        # if the point itself lies on the line segment return the point
+        if self.is_parallel(Segment(self.a,p)) :
+            print "Point lies on the line itself"
+            return p
+
+        # shift self.Origin to a
+        bn = Point(self.b.x - self.a.x,self.b.y - self.a.y)
+        pn = Point(p.x - self.a.x ,p.y - self.a.y)
+        # print "bn "
+        # bn.printme()
+        # print "pn "
+        # pn.printme()
+
+        # form the unit vector
+        bn = Point(bn.x/self.Origin.distance(bn) , bn.y/self.Origin.distance(bn))
+        # print "bn "
+        # bn.printme()
+
+        # find dot product
+        t = bn.x * pn.x + bn.y * pn.y
+        # print "t is ",t
+
+        # find the projected point
+        ans = Point(t*bn.x,t*bn.y)
+        # print "ans is "
+        # ans.printme()
+        # translate back the self.Origin
+        ans = Point(ans.x + self.a.x,ans.y + self.a.y)
+
+        return ans
