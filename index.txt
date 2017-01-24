@@ -13,3 +13,4 @@
     is_parallel(Line Segment) bool
     projection(point) point
     intersection(linesegment) point
+    facinglength(LineSegment) Decimal
