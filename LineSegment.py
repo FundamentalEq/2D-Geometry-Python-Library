@@ -52,7 +52,11 @@ class Segment:
 
     # Check if the line segment contains the given point "p" or not
     def contains(self,p) :
-        if self.is_parallel(Segment(p,self.a)) :
+        if not p == self.a :
+            other = self.a
+        else :
+            other = self.b
+        if self.is_parallel(Segment(p,other)) :
             if p.distance(self.a) <= EPS or p.distance(self.b) <= EPS :
                 return True
             if self.a.x <= p.x and p.x <= self.b.x :
