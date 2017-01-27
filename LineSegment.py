@@ -150,6 +150,9 @@ class Segment:
         if not self.is_parallel(ls) :
             return Decimal(0)
 
+        # take projection of ls on self
+        ls = self.projection(ls)
+
         # if the lines are exact vertical
         if self.slope == Inf :
             # case 1
