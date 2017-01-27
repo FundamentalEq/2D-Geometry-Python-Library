@@ -72,6 +72,13 @@ class Segment:
         if isinstance(p,Segment) :
             return Segment(self.projection(p.a),self.projection(p.b))
 
+        # if the point is same as a
+        if p == self.a :
+            return self.a
+        # if the point is same as b
+        if p == self.b :
+            return self.b
+
         # if the point itself lies on the line segment return the point
         if self.is_parallel(Segment(self.a,p)) :
             return p
